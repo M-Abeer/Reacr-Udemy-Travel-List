@@ -19,6 +19,7 @@ const App = () => {
 const Logo = () => <h1>🌴Far Away👜</h1>;
 const Form = () => {
   const [description, setDescription] = useState("");
+  const [select, setSelect] = useState(5);
   function handleSubmit(e) {
     e.preventDefault();
     alert("hello");
@@ -28,7 +29,11 @@ const Form = () => {
       <h3>What do you need for your😍 trip?</h3>
       <select>
         {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
-          <option value={num} key={num}>
+          <option
+            value={select}
+            onChange={(e) => setSelect(e.target.value)}
+            key={num}
+          >
             {num}
           </option>
         ))}
