@@ -22,20 +22,20 @@ const Form = () => {
   const [select, setSelect] = useState(5);
   function handleSubmit(e) {
     e.preventDefault();
-    alert("hello");
+    console.log(e);
+    const newItems = { description, select, id: 2, package: "false" };
+    if (!description) return;
+    console.log(newItems);
+
+    setDescription("");
+    setSelect(1);
   }
   return (
     <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your😍 trip?</h3>
-      <select>
+      <select value={select} onChange={(e) => setSelect(+e.target.value)}>
         {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
-          <option
-            value={select}
-            onChange={(e) => setSelect(e.target.value)}
-            key={num}
-          >
-            {num}
-          </option>
+          <option key={num}>{num}</option>
         ))}
       </select>
       <input
@@ -61,7 +61,7 @@ const PackingList = () => {
 };
 const Item = ({ item }) => {
   const { id, description, quantity, packed } = item;
-  console.log(id, description, quantity, packed);
+  // console.log(id, description, quantity, packed);
   return (
     <li>
       <span style={packed ? { textDecoration: "line-through" } : {}}>
@@ -74,7 +74,9 @@ const Item = ({ item }) => {
 };
 const Stats = () => {
   return (
-    <footer>You have X items on your list,and you already packed X (X%)</footer>
+    <footer className="stats">
+      You have X items on your list,and you already packed X (X%)
+    </footer>
   );
 };
 
