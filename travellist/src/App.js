@@ -9,7 +9,7 @@ const App = () => {
   const [items, setItems] = useState([]);
   function handleAddItems(item) {
     setItems((items) => [...items, item]);
-    console.log(items);
+    // console.log(items);
   }
   return (
     <div className="app">
@@ -75,8 +75,9 @@ const PackingList = ({ items }) => {
   );
 };
 const Item = ({ item }) => {
+  // console.log(item);
   const { id, description, quantity, packed } = item;
-  // console.log(id, description, quantity, packed);
+  console.log(id, description, quantity, packed);
   return (
     <li>
       <span style={packed ? { textDecoration: "line-through" } : {}}>
