@@ -78,9 +78,10 @@ const Item = ({ item }) => {
   const { id, description, select, packed } = item;
   // console.log(item);
   console.log(id, description, select, packed);
+  console.log(packed);
   return (
     <li>
-      <span style={packed ? {} : { color: "gray" }}>
+      <span style={+packed ? { textDecoration: "line-through" } : {}}>
         {select} {description}
       </span>
 
