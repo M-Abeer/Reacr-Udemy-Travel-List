@@ -3,7 +3,6 @@ import "./index.css";
 // const initialItems = [
 //   { id: 1, description: "Passports", quantity: 2, packed: false },
 //   { id: 2, description: "Socks", quantity: 12, packed: true },
-//   { id: 3, description: "Charger", quantity: 1, packed: true },
 // ];
 const App = () => {
   const [items, setItems] = useState([]);
@@ -24,7 +23,7 @@ const App = () => {
 const Logo = () => <h1>🌴Far Away👜</h1>;
 const Form = ({ onAddItems }) => {
   const [description, setDescription] = useState("");
-  const [select, setSelect] = useState(5);
+  const [select, setSelect] = useState(1);
   // const [items, setItems] = useState([]);
   // Move to App component
   // function handleAddItems(item) {
@@ -35,7 +34,7 @@ const Form = ({ onAddItems }) => {
   function handleSubmit(e) {
     e.preventDefault();
     // console.log(e);
-    const newItems = { description, select, id: Date.now(), package: "false" };
+    const newItems = { description, select, id: Date.now(), packed: "false" };
     // console.log(newItems);
     if (!description) return;
     // console.log(items);
@@ -76,12 +75,13 @@ const PackingList = ({ items }) => {
 };
 const Item = ({ item }) => {
   // console.log(item);
-  const { id, description, quantity, packed } = item;
-  console.log(id, description, quantity, packed);
+  const { id, description, select, packed } = item;
+  // console.log(item);
+  console.log(id, description, select, packed);
   return (
     <li>
-      <span style={packed ? { textDecoration: "line-through" } : {}}>
-        {quantity} {description}
+      <span style={packed ? {} : { color: "gray" }}>
+        {select} {description}
       </span>
 
       <button>❌</button>
