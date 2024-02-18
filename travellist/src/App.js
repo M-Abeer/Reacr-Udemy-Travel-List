@@ -1,31 +1,45 @@
 import React, { useState } from "react";
 import "./index.css";
-const initialItems = [
-  { id: 1, description: "Passports", quantity: 2, packed: false },
-  { id: 2, description: "Socks", quantity: 12, packed: true },
-  { id: 3, description: "Charger", quantity: 1, packed: true },
-];
+// const initialItems = [
+//   { id: 1, description: "Passports", quantity: 2, packed: false },
+//   { id: 2, description: "Socks", quantity: 12, packed: true },
+//   { id: 3, description: "Charger", quantity: 1, packed: true },
+// ];
 const App = () => {
+  const [items, setItems] = useState([]);
+  function handleAddItems(item) {
+    setItems((items) => [...items, item]);
+    console.log(items);
+  }
   return (
     <div className="app">
       <Logo />
-      <Form />
-      <PackingList />
+      <Form onAddItems={handleAddItems} />
+      <PackingList items={items} />
       <Stats />
     </div>
   );
 };
 
 const Logo = () => <h1>🌴Far Away👜</h1>;
-const Form = () => {
+const Form = ({ onAddItems }) => {
   const [description, setDescription] = useState("");
   const [select, setSelect] = useState(5);
+  // const [items, setItems] = useState([]);
+  // Move to App component
+  // function handleAddItems(item) {
+  //   setItems((items) => [...items, item]);
+  //   // console.log(items);
+  // }
+  // Move to App
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(e);
-    const newItems = { description, select, id: 2, package: "false" };
+    // console.log(e);
+    const newItems = { description, select, id: Date.now(), package: "false" };
+    // console.log(newItems);
     if (!description) return;
-    console.log(newItems);
+    // console.log(items);
+    onAddItems(newItems);
 
     setDescription("");
     setSelect(1);
@@ -48,11 +62,12 @@ const Form = () => {
     </form>
   );
 };
-const PackingList = () => {
+const PackingList = ({ items }) => {
+  // console.log(items);
   return (
     <div className="list">
       <ul>
-        {initialItems.map((item) => (
+        {items.map((item) => (
           <Item item={item} key={item.id} />
         ))}
       </ul>
