@@ -11,17 +11,25 @@ const App = () => {
     // console.log(items);
   }
   function handleDeleteItem(id) {
-    console.log("Hello");
     setItems((items) => items.filter((item) => item.id !== id));
   }
   function handleUpdateItem(id) {
-    setItems((items) => items.map((i) => i.id));
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
   }
+
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} onDeleteItems={handleDeleteItem} />
+      <PackingList
+        items={items}
+        onDeleteItems={handleDeleteItem}
+        onUpdateItem={handleUpdateItem}
+      />
       <Stats />
     </div>
   );
@@ -40,13 +48,9 @@ const Form = ({ onAddItems }) => {
   // Move to App
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log(e);
-    const newItems = { description, select, id: Date.now(), packed: "false" };
-    // console.log(newItems);
+    const newItems = { description, select, id: Date.now(), packed: 0 };
     if (!description) return;
-    // console.log(items);
     onAddItems(newItems);
-
     setDescription("");
     setSelect(1);
   }
@@ -68,27 +72,35 @@ const Form = ({ onAddItems }) => {
     </form>
   );
 };
-const PackingList = ({ items, onDeleteItems }) => {
-  // console.log(items);
+const PackingList = ({ items, onDeleteItems, onUpdateItem }) => {
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} onDeleteItems={onDeleteItems} />
+          <Item
+            item={item}
+            key={item.id}
+            onDeleteItems={onDeleteItems}
+            onUpdateItem={onUpdateItem}
+          />
         ))}
       </ul>
     </div>
   );
 };
-const Item = ({ item, onDeleteItems }) => {
-  // console.log(item);
+const Item = ({ item, onDeleteItems, onUpdateItem }) => {
   const { id, description, select, packed } = item;
-  // console.log(item);
   console.log(id, description, select, packed);
   console.log(packed);
   return (
     <li>
-      <input type="checkbox" value={packed} onChange={() => {}} />
+      <input
+        type="checkbox"
+        value={packed}
+        onChange={() => {
+          onUpdateItem(id);
+        }}
+      />
       <span style={+packed ? { textDecoration: "line-through" } : {}}>
         {select} {description}
       </span>
