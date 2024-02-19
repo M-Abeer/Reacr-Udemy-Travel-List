@@ -20,6 +20,10 @@ const App = () => {
       )
     );
   }
+  function deleteAll() {
+    const confirmed = window.confirm("Are you sure want to delete?");
+    if (confirmed) setItems([]);
+  }
 
   return (
     <div className="app">
@@ -29,6 +33,7 @@ const App = () => {
         items={items}
         onDeleteItems={handleDeleteItem}
         onUpdateItem={handleUpdateItem}
+        deleteAll={deleteAll}
       />
       <Stats items={items} />
     </div>
@@ -72,13 +77,23 @@ const Form = ({ onAddItems }) => {
     </form>
   );
 };
-const PackingList = ({ items, onDeleteItems, onUpdateItem }) => {
+const PackingList = ({ items, onDeleteItems, onUpdateItem, deleteAll }) => {
   const [sortBy, setSortBy] = useState("input");
+  let sortItems;
+  if (sortBy === "input") sortItems = items;
+  if (sortBy === "description")
+    sortItems = items
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+  if (sortBy === "packed")
+    sortItems = items
+      .slice()
+      .sort((a, b) => Number(a.packed) - Number(b.packed));
 
   return (
     <div className="list">
       <ul>
-        {items.map((item) => (
+        {sortItems.map((item) => (
           <Item
             item={item}
             key={item.id}
@@ -93,6 +108,7 @@ const PackingList = ({ items, onDeleteItems, onUpdateItem }) => {
           <option value="description">Sort by Description</option>
           <option value="packed">Sort by Packed Status</option>
         </select>
+        <button onClick={deleteAll}>Clear List</button>
       </div>
     </div>
   );
