@@ -10,11 +10,18 @@ const App = () => {
     setItems((items) => [...items, item]);
     // console.log(items);
   }
+  function handleDeleteItem(id) {
+    console.log("Hello");
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
+  function handleUpdateItem(id) {
+    setItems((items) => items.map((i) => i.id));
+  }
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} />
+      <PackingList items={items} onDeleteItems={handleDeleteItem} />
       <Stats />
     </div>
   );
@@ -61,19 +68,19 @@ const Form = ({ onAddItems }) => {
     </form>
   );
 };
-const PackingList = ({ items }) => {
+const PackingList = ({ items, onDeleteItems }) => {
   // console.log(items);
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} />
+          <Item item={item} key={item.id} onDeleteItems={onDeleteItems} />
         ))}
       </ul>
     </div>
   );
 };
-const Item = ({ item }) => {
+const Item = ({ item, onDeleteItems }) => {
   // console.log(item);
   const { id, description, select, packed } = item;
   // console.log(item);
@@ -81,11 +88,12 @@ const Item = ({ item }) => {
   console.log(packed);
   return (
     <li>
+      <input type="checkbox" value={packed} onChange={() => {}} />
       <span style={+packed ? { textDecoration: "line-through" } : {}}>
         {select} {description}
       </span>
 
-      <button>❌</button>
+      <button onClick={() => onDeleteItems(id)}>❌</button>
     </li>
   );
 };
