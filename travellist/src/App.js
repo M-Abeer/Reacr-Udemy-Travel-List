@@ -6,9 +6,9 @@ import "./index.css";
 // ];
 const App = () => {
   const [items, setItems] = useState([]);
+
   function handleAddItems(item) {
     setItems((items) => [...items, item]);
-    // console.log(items);
   }
   function handleDeleteItem(id) {
     setItems((items) => items.filter((item) => item.id !== id));
@@ -30,7 +30,7 @@ const App = () => {
         onDeleteItems={handleDeleteItem}
         onUpdateItem={handleUpdateItem}
       />
-      <Stats />
+      <Stats items={items} />
     </div>
   );
 };
@@ -90,8 +90,6 @@ const PackingList = ({ items, onDeleteItems, onUpdateItem }) => {
 };
 const Item = ({ item, onDeleteItems, onUpdateItem }) => {
   const { id, description, select, packed } = item;
-  console.log(id, description, select, packed);
-  console.log(packed);
   return (
     <li>
       <input
@@ -109,10 +107,26 @@ const Item = ({ item, onDeleteItems, onUpdateItem }) => {
     </li>
   );
 };
-const Stats = () => {
+const Stats = ({ items }) => {
+  if (!items.length)
+    return (
+      <p className="stats">
+        <em>Start adding some items to your packing List🚀 </em>
+      </p>
+    );
+  const numItems = items.length;
+  const numPacked = items.filter((item) => item.packed).length;
+  const packedPercentage = Math.round((numPacked / numItems) * 100);
   return (
     <footer className="stats">
-      You have X items on your list,and you already packed X (X%)
+      {packedPercentage === 100 ? (
+        "You got everything! Ready to go✈✈"
+      ) : (
+        <em>
+          You have {numItems} items on your list,and you already packed{" "}
+          {numPacked}({packedPercentage}%)
+        </em>
+      )}
     </footer>
   );
 };
